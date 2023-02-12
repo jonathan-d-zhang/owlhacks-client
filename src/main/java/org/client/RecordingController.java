@@ -2,6 +2,8 @@ package org.client;
 
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.text.Text;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
 import org.apache.hc.client5.http.entity.mime.FileBody;
 import org.apache.hc.client5.http.entity.mime.MultipartEntityBuilder;
@@ -17,7 +19,10 @@ import java.util.LinkedList;
 public class RecordingController {
     private final AudioFormat audioFormat = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, 44100, 16, 2,4,44100, false);
     private final DataLine.Info dataInfo = new DataLine.Info(TargetDataLine.class, audioFormat);
+
+    public Text meetingCode;
     private int key;
+
     private final LinkedList<Integer> queue = new LinkedList<>();
 
     private Task<Void> task = null;
@@ -82,6 +87,7 @@ public class RecordingController {
     public void setKey(int key) {
         System.out.println("Key set to: " + key);
         this.key = key;
+        this.meetingCode.setText(String.valueOf(key));
     }
 }
 
