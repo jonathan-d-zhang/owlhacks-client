@@ -24,6 +24,9 @@ public class RecordingController {
 
     @FXML
     private void startRecording() {
+        for (int i = 0; i < 5; i++) {
+            new Thread(new UploadAudio(queue, key)).start();
+        }
         task = new Task<>() {
             /**
              * @noinspection BusyWait
@@ -51,7 +54,7 @@ public class RecordingController {
                     targetLine.open();
                     targetLine.start();
                     audioRecordThread.start();
-                    Thread.sleep(5000);
+                    Thread.sleep(6000);
                     System.out.println("Stopping");
                     targetLine.stop();
                     targetLine.close();
@@ -64,9 +67,6 @@ public class RecordingController {
         };
 
         var recordThread = new Thread(task);
-        var uploadThread = new Thread(new UploadAudio(queue, key));
-        uploadThread.setDaemon(true);
-        uploadThread.start();
         recordThread.start();
     }
 
@@ -98,20 +98,29 @@ class UploadAudio extends Task<Void> {
     @Override
     protected Void call() throws InterruptedException, IOException {
         Integer x;
-        while (true) {
-            System.out.println("hi from daemon " + queue);
-            if ((x = queue.pollFirst()) != null) {
-                File f = new File("recordings/record" + x + ".wav");
-                final var e = MultipartEntityBuilder.create()
-                        .addPart("file", new FileBody(f))
-                        .build();
-                var p = new HttpPost("http://172.104.14.22/stt/" + key);
-                p.setEntity(e);
-                client.execute(p, new BasicHttpClientResponseHandler());
 
-                f.delete();
-            }
-            Thread.sleep(1000);
+        while ((x = queue.pollFirst()) == null) {
+            Thread.sleep(100);
         }
+
+        System.out.println("queue is: " + queue);
+
+        File f = new File("recordings/record" + x + ".wav");
+        final var e = MultipartEntityBuilder.create()
+                .addPart("file", new FileBody(f))
+                .build();
+
+        var p = new HttpPost("http://172.104.14.22/stt/" + key);
+        p.setEntity(e);
+
+        var start = System.nanoTime();
+        client.execute(p, new BasicHttpClientResponseHandler());
+        var end = System.nanoTime();
+
+        System.out.println("elapsed " + (end - start));
+
+        f.delete();
+
+        return null;
     }
 }

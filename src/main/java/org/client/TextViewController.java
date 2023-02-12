@@ -22,7 +22,6 @@ public class TextViewController {
 
     public void init(int key) {
         TextService service = new TextService(key, lectureText);
-        //service.words.addListener((ListChangeListener<String>) change -> start = service.getLastValue());
         service.setPeriod(Duration.seconds(3));
         service.start();
     }
