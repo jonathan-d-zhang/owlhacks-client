@@ -21,7 +21,6 @@ public class KeyController {
         }
     }
 
-
     Parent loadTranscribing(int key) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("textview.fxml"));
         Parent root = fxmlLoader.load();

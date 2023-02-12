@@ -2,28 +2,31 @@ package org.client;
 
 import java.io.IOException;
 import java.net.URI;
+import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
+import java.util.ResourceBundle;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.text.Text;
 
 
-public class TextViewController {
+public class TextViewController implements Initializable {
     private final HttpClient client = HttpClient.newBuilder().build();
     private int key;
     private String start = "-";
     private static final Gson gson = new Gson();
 
-    @FXML
-    private void spawnThread() throws InterruptedException {
-        System.out.println("clicked");
+    @FXML Text lectureText;
 
-
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
         var task = new Task<Void>() {
             @Override protected Void call() throws IOException, InterruptedException {
                 while (!isCancelled()) {
@@ -34,16 +37,20 @@ public class TextViewController {
 
                     HttpResponse<String> r = client.send(req, HttpResponse.BodyHandlers.ofString());
                     ArrayList<Response> responses = gson.fromJson(r.body(), new TypeToken<ArrayList<Response>>(){}.getType());
-                    start = responses.get(responses.size() - 1).start;
+                    String lastId = responses.get(responses.size() - 1).start;
+                    if (!lastId.equals(start)) {
+                        start = lastId;
+                        lectureText.setText("e");
+                    }
+                    //noinspection BusyWait
                     Thread.sleep(3000);
                 }
-             return null;
+                return null;
             }
         };
 
         var thread = new Thread(task);
         thread.start();
-        thread.join();
     }
 
     public void setKey(int key) {

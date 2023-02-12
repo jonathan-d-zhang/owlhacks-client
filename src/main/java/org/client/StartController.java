@@ -33,7 +33,6 @@ public class StartController {
     Parent loadRecording(int key) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("recording.fxml"));
         Parent root = fxmlLoader.load();
-        System.out.println(fxmlLoader.getLocation());
         RecordingController rc = fxmlLoader.getController();
         rc.setKey(key);
         return root;
