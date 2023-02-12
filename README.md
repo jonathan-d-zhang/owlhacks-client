@@ -1,4 +1,4 @@
-#LiveCC Client Side
+<h1>LiveCC Client Side</h1>
 
 <h2><b>TABLE OF CONTENTS</b></h2>
 <ol>
