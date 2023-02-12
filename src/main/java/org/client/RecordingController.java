@@ -17,7 +17,7 @@ public class RecordingController {
     private final CloseableHttpClient client = HttpClients.createDefault();
     private final AudioFormat audioFormat = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, 44100, 16, 2,4,44100, false);
     private final DataLine.Info dataInfo = new DataLine.Info(TargetDataLine.class, audioFormat);
-    private int key = 3419844;
+    private int key;
 
     @FXML
     private void startRecording() {
