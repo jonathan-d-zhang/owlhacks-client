@@ -19,18 +19,24 @@ public class RecordingController {
     private final DataLine.Info dataInfo = new DataLine.Info(TargetDataLine.class, audioFormat);
     private int key;
 
+    private Task<Void> task = null;
+
     @FXML
     private void startRecording() {
         // spawn a thread that spawns threads. alternate between numbers 1 and 2
-        var task = new Task<Void>() {
-            @Override protected Void call() throws LineUnavailableException, InterruptedException, IOException {
-                if(!AudioSystem.isLineSupported(dataInfo)){
+        task = new Task<>() {
+            /**
+             * @noinspection BusyWait
+             */
+            @Override
+            protected Void call() throws LineUnavailableException, InterruptedException, IOException {
+                if (!AudioSystem.isLineSupported(dataInfo)) {
                     System.out.println("Not Supported");
                     // TODO: error here
                 }
 
                 while (!isCancelled()) {
-                    if(!AudioSystem.isLineSupported(dataInfo)){
+                    if (!AudioSystem.isLineSupported(dataInfo)) {
                         System.out.println("Not Supported");
                     }
 
@@ -39,9 +45,9 @@ public class RecordingController {
                     Thread audioRecordThread = new Thread(() -> {
                         AudioInputStream recordingStream = new AudioInputStream(targetLine);
                         File outputFile = new File("record.wav");
-                        try{
+                        try {
                             AudioSystem.write(recordingStream, AudioFileFormat.Type.WAVE, outputFile);
-                        } catch(IOException ignored){
+                        } catch (IOException ignored) {
                         }
                     });
 
@@ -72,10 +78,15 @@ public class RecordingController {
 
     @FXML
     public void stopRecording() {
-
+        if (task != null) {
+            System.out.println("Cancelling task");
+            task.cancel();
+        }
+        // TODO: error or something if already stopped
     }
 
     public void setKey(int key) {
+        System.out.println("Key set to: " + key);
         this.key = key;
     }
 }
