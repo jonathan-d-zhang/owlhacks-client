@@ -38,9 +38,9 @@ Dependencies
 
 <h3>Credits</h3>
 <ul>
-<li>Cameron - </li>
-<li>Gabriel - </li>
-<li>John - </li>
+<li>Cameron - https://github.com/Teamk</li>
+<li>Gabriel - https://github.com/Lopes51789</li>
+<li>John - https://github.com/jonathan-d-zhang</li>
 <li>Ishan - </li>
 </ul>
  
