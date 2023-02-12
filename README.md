@@ -1,5 +1,4 @@
-# owlhacks-client
-<h1> LiveCC Client Side </h1>
+#LiveCC Client Side
 
 <h2><b>TABLE OF CONTENTS</b></h2>
 <ol>
