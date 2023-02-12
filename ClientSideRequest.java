@@ -12,105 +12,63 @@ import java.net.http.HttpRequest;
 import javax.swing.JOptionPane;
 
 public class ClientSideRequest {
-    public static void main(String[] args) throws IOException, InterruptedException {
+    public static void main(String[] args) throws IOException, InterruptedException, javax.sound.sampled.LineUnavailableException {
         /**
          * Getting audio from the user
          * */
-        try {
-            AudioFormat audioFormat = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, 44100, 16, 2,4,44100, false);
-            DataLine.Info dataInfo = new DataLine.Info(TargetDataLine.class, audioFormat);
-            if(!AudioSystem.isLineSupported(dataInfo)){
-                System.out.printf("Not Supported");
-            }
-
-            TargetDataLine targetLine = (TargetDataLine) AudioSystem.getLine(dataInfo);
-            targetLine.open();
-
-            JOptionPane.showMessageDialog(null, "Hit Ok to record");
-            targetLine.start();
-
-            Thread audioRecordThread = new Thread(){
-                @Override public void run(){
-                    AudioInputStream recordingStream = new AudioInputStream(targetLine);
-                    File outputFile = new File("record.wav");
-                    try{
-                        AudioSystem.write(recordingStream, AudioFileFormat.Type.WAVE, outputFile);
-                        /*int i = 0;
-                        while(i<5){
-                            AudioSystem.write(recordingStream, AudioFileFormat.Type.WAVE, outputFile);
-                            Thread.sleep(5000);
-                            i++;
-                        }*/
-                    }catch(IOException ex){
-                        System.out.println(ex);
-                    }
-                    System.out.println("Stopped Recording");
-                }
-            };
-            /*boolean running = true;
-            int i=0;
-            while(i<5){
-                audioRecordThread.start();
-                Thread.sleep(5000);
-                targetLine.stop();
-                i++;
-            }*/
-            /*audioRecordThread.start();
-            Thread.sleep(5000);
-            targetLine.stop();
-            targetLine.close();*/
-            boolean running = true;
-            while(running) {
-                fiveSecRecording(audioRecordThread);
-                Thread.sleep(5000);
-                int cont = userOption();
-                if (cont == 1) {
-                    fiveSecRecording(audioRecordThread);
-                    Thread.sleep(5000);
-                    //cont = userOption();
-                }else{
-                    running = false;
-                }
-                /*targetLine.start();
-                audioRecordThread.start();
-                Thread.sleep(5000);
-                targetLine.stop();
-                targetLine.close();*/
-            }
-            targetLine.stop();
-            targetLine.close();
-
-
-        }catch (Exception e){
-            System.out.println(e);
+        int x = JOptionPane.showConfirmDialog(null, "Start the recording?");
+        while(true){
+            record();
+            //x = JOptionPane.showConfirmDialog(null, "Do you wish to continue?");
         }
 
+    }
+    public static void record() throws javax.sound.sampled.LineUnavailableException, java.lang.InterruptedException, java.io.IOException, java.lang.InterruptedException{
 
+        AudioFormat audioFormat = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, 44100, 16, 2,4,44100, false);
+        DataLine.Info dataInfo = new DataLine.Info(TargetDataLine.class, audioFormat);
+        if(!AudioSystem.isLineSupported(dataInfo)){
+            System.out.printf("Not Supported");
+        }
+
+        TargetDataLine targetLine = (TargetDataLine) AudioSystem.getLine(dataInfo);
+
+        Thread audioRecordThread = new Thread(){
+            @Override public void run(){
+                AudioInputStream recordingStream = new AudioInputStream(targetLine);
+                File outputFile = new File("record.wav");
+                try{
+                    AudioSystem.write(recordingStream, AudioFileFormat.Type.WAVE, outputFile);
+                }catch(IOException ex){
+                    System.out.println(ex);
+                }
+                System.out.println("Stopped Recording");
+            }
+        };
+
+        targetLine.open();
+        targetLine.start();
+        audioRecordThread.start();
+        Thread.sleep(5000);
+        //JOptionPane.showMessageDialog(null, "Press to stop");
+        targetLine.stop();
+        targetLine.close();
+        sendRequest();
+    }
+
+    public static void sendRequest()throws java.io.IOException, java.lang.InterruptedException{
         /**
          * Connect to server 'http://172.104.14.22/open' and make a POST request
          * */
-            HttpClient client = HttpClient.newHttpClient();
-            //ID - what the last data from the server was
-            //Words translated
-            HttpRequest req = HttpRequest.newBuilder()
-                    .uri(URI.create("http://172.104.14.22/open"))
-                    .POST(HttpRequest.BodyPublishers.noBody())
-                    .build();
-            var x = client.send(req, HttpResponse.BodyHandlers.ofString());
-            System.out.println(x.body());
-
-
-
+        HttpClient client = HttpClient.newHttpClient();
+        //ID - what the last data from the server was
+        //Words translated
+        HttpRequest req = HttpRequest.newBuilder()
+                .uri(URI.create("http://172.104.14.22/open"))
+                .POST(HttpRequest.BodyPublishers.noBody())
+                .build();
+        var y = client.send(req, HttpResponse.BodyHandlers.ofString());
+        System.out.println(y.body());
     }
-    public static void fiveSecRecording(Thread audioRecordThread){
-        audioRecordThread.start();
-    }
-
-    public static int userOption(){
-        //JOptionPane.showConfirmDialog(null, "Do you want to stop?");
-        return JOptionPane.showConfirmDialog(null, "Do you want to stop?");
-    }
-
-
 
 }
