@@ -68,7 +68,7 @@
       </HBox>
       <HBox alignment="TOP_CENTER" layoutX="10.0" layoutY="36.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="17.0" AnchorPane.leftAnchor="17.0" AnchorPane.rightAnchor="17.0" AnchorPane.topAnchor="75.0">
          <children>
-            <Text fx:id="lectureText" fill="WHITE" fontSmoothingType="LCD" stroke="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Lorem Ipsum" textAlignment="CENTER">
+            <Text fx:id="lectureText" fill="WHITE" fontSmoothingType="LCD" stroke="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="According to all known laws of aviation there is no reason why a bee should be able to fly. It's tiny wings are too small to get its fat little body off of the ground" textAlignment="CENTER" wrappingWidth="500.0">
                <font>
                   <Font name="Arial" size="21.0" />
                </font>
