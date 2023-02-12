@@ -2,6 +2,7 @@ package org.example;
 
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javax.sound.sampled.*;
 
 import java.io.File;
@@ -15,60 +16,68 @@ import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
 
 public class RecordingController {
-    final CloseableHttpClient client = HttpClients.createDefault();
-    private int key;
-    private Thread recordingThread = null;
+    private final CloseableHttpClient client = HttpClients.createDefault();
+    private final AudioFormat audioFormat = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, 44100, 16, 2,4,44100, false);
+    private final DataLine.Info dataInfo = new DataLine.Info(TargetDataLine.class, audioFormat);
+    private int key = 3419844;
 
     @FXML
-    private void startRecording() throws LineUnavailableException {
-        if (recordingThread != null) {
-            // make an error?
-        }
-
-        AudioFormat audioFormat = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, 44100, 16, 2,4,44100, false);
-        DataLine.Info dataInfo = new DataLine.Info(TargetDataLine.class, audioFormat);
-        if(!AudioSystem.isLineSupported(dataInfo)){
-            System.out.println("Not Supported");
-        }
-
-        TargetDataLine targetLine = (TargetDataLine) AudioSystem.getLine(dataInfo);
-
+    private void startRecording() {
+        // spawn a thread that spawns threads. alternate between numbers 1 and 2
         var task = new Task<Void>() {
-            @Override protected Void call() throws InterruptedException {
+            @Override protected Void call() throws LineUnavailableException, InterruptedException, IOException {
+                if(!AudioSystem.isLineSupported(dataInfo)){
+                    System.out.println("Not Supported");
+                    // TODO: error here
+                }
+
                 while (!isCancelled()) {
-                    AudioInputStream recordingStream = new AudioInputStream(targetLine);
-                    File outputFile = new File("record.wav");
-                    try {
-                        AudioSystem.write(recordingStream, AudioFileFormat.Type.WAVE, outputFile);
-                    } catch (IOException ignored) {
+                    if(!AudioSystem.isLineSupported(dataInfo)){
+                        System.out.println("Not Supported");
                     }
 
-                    Thread.sleep(5000);
+                    TargetDataLine targetLine = (TargetDataLine) AudioSystem.getLine(dataInfo);
 
-                    HttpPost p = new HttpPost("http://172.104.14.22/abcd");
+                    Thread audioRecordThread = new Thread(() -> {
+                        AudioInputStream recordingStream = new AudioInputStream(targetLine);
+                        File outputFile = new File("record.wav");
+                        try{
+                            AudioSystem.write(recordingStream, AudioFileFormat.Type.WAVE, outputFile);
+                        } catch(IOException ignored){
+                        }
+                    });
+
+                    targetLine.open();
+                    targetLine.start();
+                    audioRecordThread.start();
+                    Thread.sleep(5000);
+                    System.out.println("Stopping");
+                    targetLine.stop();
+                    targetLine.close();
+
+                    HttpPost p = new HttpPost("http://172.104.14.22/stt/" + key);
 
                     final var e = MultipartEntityBuilder.create()
-                            .addPart("file", new FileBody(outputFile))
+                            .addPart("file", new FileBody(new File("record.wav")))
                             .build();
                     p.setEntity(e);
-                    //var r = client.execute(p, new BasicHttpClientResponseHandler());
+                    client.execute(p, new BasicHttpClientResponseHandler());
+                    // TODO: async
                 }
                 return null;
             }
         };
 
-        recordingThread = new Thread(task);
-        recordingThread.start();
+        var thread = new Thread(task);
+        thread.start();
     }
 
     @FXML
     public void stopRecording() throws IOException {
-        if (recordingThread == null) {
-            // raise an error
-        }
+
     }
 
     public void setKey(int key) {
-
+        this.key = key;
     }
 }
