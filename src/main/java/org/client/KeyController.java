@@ -25,7 +25,7 @@ public class KeyController {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("textview.fxml"));
         Parent root = fxmlLoader.load();
         TextViewController tc = fxmlLoader.getController();
-        tc.setKey(key);
+        tc.init(key);
         return root;
     }
 }
