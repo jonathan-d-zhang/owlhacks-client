@@ -12,39 +12,36 @@ import org.apache.hc.client5.http.impl.classic.HttpClients;
 import javax.sound.sampled.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.LinkedList;
 
 public class RecordingController {
-    private final CloseableHttpClient client = HttpClients.createDefault();
     private final AudioFormat audioFormat = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, 44100, 16, 2,4,44100, false);
     private final DataLine.Info dataInfo = new DataLine.Info(TargetDataLine.class, audioFormat);
     private int key;
+    private final LinkedList<Integer> queue = new LinkedList<>();
 
     private Task<Void> task = null;
 
     @FXML
     private void startRecording() {
-        // spawn a thread that spawns threads. alternate between numbers 1 and 2
         task = new Task<>() {
             /**
              * @noinspection BusyWait
              */
             @Override
-            protected Void call() throws LineUnavailableException, InterruptedException, IOException {
+            protected Void call() throws LineUnavailableException, InterruptedException {
                 if (!AudioSystem.isLineSupported(dataInfo)) {
                     System.out.println("Not Supported");
                     // TODO: error here
                 }
-
+                int c = 0;
                 while (!isCancelled()) {
-                    if (!AudioSystem.isLineSupported(dataInfo)) {
-                        System.out.println("Not Supported");
-                    }
-
                     TargetDataLine targetLine = (TargetDataLine) AudioSystem.getLine(dataInfo);
 
+                    int finalC = c;
                     Thread audioRecordThread = new Thread(() -> {
                         AudioInputStream recordingStream = new AudioInputStream(targetLine);
-                        File outputFile = new File("record.wav");
+                        File outputFile = new File("recordings/record" + finalC + ".wav");
                         try {
                             AudioSystem.write(recordingStream, AudioFileFormat.Type.WAVE, outputFile);
                         } catch (IOException ignored) {
@@ -59,21 +56,18 @@ public class RecordingController {
                     targetLine.stop();
                     targetLine.close();
 
-                    HttpPost p = new HttpPost("http://172.104.14.22/stt/" + key);
-
-                    final var e = MultipartEntityBuilder.create()
-                            .addPart("file", new FileBody(new File("record.wav")))
-                            .build();
-                    p.setEntity(e);
-                    client.execute(p, new BasicHttpClientResponseHandler());
-                    // TODO: async
+                    queue.addLast(c);
+                    c++;
                 }
                 return null;
             }
         };
 
-        var thread = new Thread(task);
-        thread.start();
+        var recordThread = new Thread(task);
+        var uploadThread = new Thread(new UploadAudio(queue, key));
+        uploadThread.setDaemon(true);
+        uploadThread.start();
+        recordThread.start();
     }
 
     @FXML
@@ -88,5 +82,36 @@ public class RecordingController {
     public void setKey(int key) {
         System.out.println("Key set to: " + key);
         this.key = key;
+    }
+}
+
+class UploadAudio extends Task<Void> {
+    private final CloseableHttpClient client = HttpClients.createDefault();
+    private final LinkedList<Integer> queue;
+    private final int key;
+
+    public UploadAudio(LinkedList<Integer> queue, int key) {
+        this.queue = queue;
+        this.key = key;
+    }
+
+    @Override
+    protected Void call() throws InterruptedException, IOException {
+        Integer x;
+        while (true) {
+            System.out.println("hi from daemon " + queue);
+            if ((x = queue.pollFirst()) != null) {
+                File f = new File("recordings/record" + x + ".wav");
+                final var e = MultipartEntityBuilder.create()
+                        .addPart("file", new FileBody(f))
+                        .build();
+                var p = new HttpPost("http://172.104.14.22/stt/" + key);
+                p.setEntity(e);
+                client.execute(p, new BasicHttpClientResponseHandler());
+
+                f.delete();
+            }
+            Thread.sleep(1000);
+        }
     }
 }

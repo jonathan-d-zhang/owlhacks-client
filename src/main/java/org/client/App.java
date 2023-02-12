@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
 
 /**
@@ -37,6 +38,9 @@ public class App extends Application {
 
 
     public static void main(String[] args) {
+        File recordings = new File("recordings");
+        recordings.mkdir();
+        recordings.deleteOnExit();
         launch();
     }
 
