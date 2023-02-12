@@ -2,18 +2,16 @@ package org.example;
 
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javax.sound.sampled.*;
-
-import java.io.File;
-import java.io.IOException;
-
 import org.apache.hc.client5.http.classic.methods.HttpPost;
 import org.apache.hc.client5.http.entity.mime.FileBody;
 import org.apache.hc.client5.http.entity.mime.MultipartEntityBuilder;
 import org.apache.hc.client5.http.impl.classic.BasicHttpClientResponseHandler;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
+
+import javax.sound.sampled.*;
+import java.io.File;
+import java.io.IOException;
 
 public class RecordingController {
     private final CloseableHttpClient client = HttpClients.createDefault();
@@ -73,7 +71,7 @@ public class RecordingController {
     }
 
     @FXML
-    public void stopRecording() throws IOException {
+    public void stopRecording() {
 
     }
 
