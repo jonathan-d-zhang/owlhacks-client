@@ -15,7 +15,7 @@ import javafx.fxml.FXML;
 
 public class PrimaryController {
     private final HttpClient client = HttpClient.newBuilder().build();
-    private int key = 6153199;
+    private int key;
     private String start = "-";
     private static final Gson gson = new Gson();
 
@@ -40,7 +40,7 @@ public class PrimaryController {
                     HttpResponse<String> r = client.send(req, HttpResponse.BodyHandlers.ofString());
                     ArrayList<Response> responses = gson.fromJson(r.body(), new TypeToken<ArrayList<Response>>(){}.getType());
                     start = responses.get(responses.size() - 1).start;
-                    Thread.sleep(1000);
+                    Thread.sleep(3000);
                 }
              return null;
             }
@@ -60,9 +60,7 @@ class Response {
     public String start;
     public String word;
 
-    Response() {
-
-    }
+    Response() {}
 
     @Override
     public String toString() {

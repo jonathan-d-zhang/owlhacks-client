@@ -18,7 +18,7 @@ public class KeyController {
         try {
             int key = Integer.parseInt(textField.getText());
             System.out.println("Inputted: " + key);
-            App.setRoot("textview");
+            App.loadTranscribing(key);
         } catch (NumberFormatException ignored) {}
     }
 }
