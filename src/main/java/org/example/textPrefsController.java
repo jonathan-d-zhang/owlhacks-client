@@ -13,11 +13,11 @@ public class textPrefsController implements Initializable{
     @FXML
     private ChoiceBox<String> fontChoiceBox;
 
-    private String[] fonts = {"Helvetica","Arial","Georgia"};
+    private final String[] fonts = {"Helvetica","Arial","Georgia"};
 
     @FXML
     private ChoiceBox<String> fontSizeChoiceBox;
-    private String[] fontSize = {"12","14","16","18","20","22","24","26","28","30","32","34","36"};
+    private final String[] fontSize = {"12","14","16","18","20","22","24","26","28","30","32","34","36"};
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
