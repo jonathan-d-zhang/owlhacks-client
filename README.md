@@ -1,18 +1,18 @@
 # owlhacks-client
-<h1> ... Client Side </h1>
+<h1> LiveCC Client Side </h1>
 
 <h2><b>TABLE OF CONTENTS</b></h2>
 <ol>
 <li><b>Description</b></li>
 <li><b>Installation</b></li>
-<li><b>How to Use</b></li>
+<!-- <li><b>How to Use</b></li> -->
 <li><b>Credits</b></li>
 </ol>
 
 <h3>Description</h3>
- <br>This application is responsible for recording a 5 second audio file for the duration of the lecture and sending the information to the Server Side</br>
+ This application is responsible for recording a 5 second audio file for the duration of the lecture and sending the information to the Server Side
  
- <br>We used the application this way because we wanted to make the client responsible for controling when the recording starts and stops</br>
+ We used the application this way because we wanted to make the client responsible for controling when the recording starts and stops
  
  We are currently working with the UI so we have a interface that both the students and the professors can interact
  <ul>
@@ -25,7 +25,7 @@
  <h3>Installation</h3>
  
  Run Locally
- <ul>
+<ul>
 <li>ClientSideRequest.java</li>
 </ul>
 Dependencies
@@ -33,7 +33,8 @@ Dependencies
 <li>googlecode.json.simple</li>
 </ul>
 
-<h3>How to use</h3>
+<!--<h3>How to use</h3>
+Professors are ment to -->
 
 
 <h3>Credits</h3>
@@ -41,7 +42,5 @@ Dependencies
 <li>Cameron - https://github.com/Teamk09</li>
 <li>Gabriel - https://github.com/Lopes51789</li>
 <li>John - https://github.com/jonathan-d-zhang</li>
-<li>Ishan - </li>
+<li>Ishan</li>
 </ul>
- 
- 
