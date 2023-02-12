@@ -7,8 +7,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
-<AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #3B312F;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.client.KeyController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #1e1f21;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.client.KeyController">
    <children>
       <HBox alignment="CENTER" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -30,7 +29,7 @@
       </HBox>
       <HBox alignment="CENTER" layoutX="-146.0" layoutY="-75.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="65.0">
          <children>
-            <Button fx:id="submitButton" alignment="CENTER" onAction="#submitKey" mnemonicParsing="false" text="Submit" />
+            <Button fx:id="submitButton" alignment="CENTER" mnemonicParsing="false" onAction="#submitKey" text="Submit" />
          </children>
       </HBox>
    </children>

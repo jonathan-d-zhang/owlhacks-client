@@ -23,7 +23,7 @@
          </font>
       </Button>
       <Button fx:id="joinMeet" alignment="CENTER" layoutX="339.0" layoutY="151.0" mnemonicParsing="false" onAction="#joinMeet" prefHeight="75.0" prefWidth="190.0" style="-fx-background-color: #2B7C82;" text="Join Meeting" textAlignment="CENTER">
-         <font>
+          <font>
             <Font name="Helvetica" size="22.0" />
          </font></Button>
    </children>
