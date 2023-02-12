@@ -4,7 +4,7 @@
 <ol>
 <li><b>Description</b></li>
 <li><b>Installation</b></li>
-<!-- <li><b>How to Use</b></li> -->
+<li><b>How to Use</b></li>
 <li><b>Credits</b></li>
 </ol>
 
@@ -32,8 +32,8 @@ Dependencies
 <li>googlecode.json.simple</li>
 </ul>
 
-<!--<h3>How to use</h3>
-Professors are ment to -->
+<h3>How to use</h3>
+Must be paired with the server side
 
 
 <h3>Credits</h3>
