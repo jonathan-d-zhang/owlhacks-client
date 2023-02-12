@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #1e1f21;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.RecordingController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #1e1f21;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.client.RecordingController">
    <children>
       <Button fx:id="startRec" layoutX="70.0" layoutY="151.0" mnemonicParsing="false" onAction="#startRecording" prefHeight="75.0" prefWidth="190.0" style="-fx-background-color: #2B7C82;" text="Begin Recording" />
       <Button fx:id="stopRec" alignment="CENTER" layoutX="339.0" layoutY="151.0" mnemonicParsing="false" onAction="#stopRecording" prefHeight="75.0" prefWidth="190.0" style="-fx-background-color: #2B7C82;" text="Stop Recording" textAlignment="CENTER" />

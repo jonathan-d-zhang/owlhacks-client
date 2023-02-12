@@ -8,6 +8,6 @@ module org.example {
     requires org.apache.httpcomponents.client5.httpclient5;
     requires org.apache.httpcomponents.core5.httpcore5;
 
-    opens org.example to com.google.gson, javafx.fxml;
-    exports org.example;
+    opens org.client to com.google.gson, javafx.fxml;
+    exports org.client;
 }
