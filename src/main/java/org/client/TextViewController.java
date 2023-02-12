@@ -41,7 +41,6 @@ class Response {
 
 
 class TextService extends ScheduledService<Void> {
-//    public final ObservableList<String> words = FXCollections.observableList(new LinkedList<>());
     private final int key;
     private final Text lectureText;
 

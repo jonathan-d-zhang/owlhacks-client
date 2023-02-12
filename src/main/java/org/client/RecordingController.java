@@ -59,8 +59,7 @@ public class RecordingController {
                     targetLine.open();
                     targetLine.start();
                     audioRecordThread.start();
-                    Thread.sleep(6000);
-                    System.out.println("Stopping");
+                    Thread.sleep(4000);
                     targetLine.stop();
                     targetLine.close();
 
@@ -78,14 +77,12 @@ public class RecordingController {
     @FXML
     public void stopRecording() {
         if (task != null) {
-            System.out.println("Cancelling task");
             task.cancel();
         }
         // TODO: error or something if already stopped
     }
 
     public void setKey(int key) {
-        System.out.println("Key set to: " + key);
         this.key = key;
         this.meetingCode.setText(String.valueOf(key));
     }
@@ -109,8 +106,6 @@ class UploadAudio extends Task<Void> {
             Thread.sleep(100);
         }
 
-        System.out.println("queue is: " + queue);
-
         File f = new File("recordings/record" + x + ".wav");
         final var e = MultipartEntityBuilder.create()
                 .addPart("file", new FileBody(f))
@@ -119,11 +114,7 @@ class UploadAudio extends Task<Void> {
         var p = new HttpPost("http://172.104.14.22/stt/" + key);
         p.setEntity(e);
 
-        var start = System.nanoTime();
         client.execute(p, new BasicHttpClientResponseHandler());
-        var end = System.nanoTime();
-
-        System.out.println("elapsed " + (end - start));
 
         f.delete();
 
