@@ -1,17 +1,20 @@
 package org.example;
 
-import java.io.IOException;
 import javafx.fxml.FXML;
+import javafx.scene.control.TextField;
 
 import java.net.http.HttpClient;
 
-public class MainController {
+public class KeyController {
     private HttpClient client;
 
     @FXML
-    private void loadText() {
+    TextField textField;
+    private void submitKey() {
         if (client == null) {
             client = HttpClient.newBuilder().build();
         }
+
+        System.out.println(textField.getText());
     }
 }
