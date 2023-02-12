@@ -33,7 +33,7 @@ Dependencies
 </ul>
 
 <h3>How to use</h3>
-Must be paired with the server side
+Must be paired with the server side and with the UI branch
 
 
 <h3>Credits</h3>
@@ -41,5 +41,5 @@ Must be paired with the server side
 <li>Cameron - https://github.com/Teamk09</li>
 <li>Gabriel - https://github.com/Lopes51789</li>
 <li>John - https://github.com/jonathan-d-zhang</li>
-<li>Ishan</li>
+<li>Ishan - https://github.com/IshanAggarwal125</li>
 </ul>
